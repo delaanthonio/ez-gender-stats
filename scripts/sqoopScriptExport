@@ -5,5 +5,5 @@ sqoop export \
 --table GENDER_STATS_DATA \
 --fields-terminated-by ',' \
 --enclosed-by '\"' \
---target-dir GenderStatsData/ \
+--export-dir GenderStatsData/ \
 -m 1
