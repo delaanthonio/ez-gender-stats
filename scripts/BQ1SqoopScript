@@ -7,3 +7,13 @@ sqoop export \
 --enclosed-by '\"' \
 --export-dir GenderStatsData/ \
 -m 1
+
+sqoop import \
+--connect jdbc:mysql://localhost/GENDER_STATS_DB \
+--username EZ_ADMIN \
+--password 'ez--__!1978!' \
+--table BQ1_TRANSFORM \
+--fields-terminated-by '|' \
+--delete-target-dir \
+--target-dir EZData/BQ1/ \
+-m 1
