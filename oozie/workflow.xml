@@ -1,0 +1,209 @@
+<workflow-app name="oozie-lab" xmlns="uri:oozie:workflow:0.4">
+	<!-- Start job control node -->
+	<start to="sqoop-eval" />
+	
+	<!-- Sqoop eval TRUNCATE GENDER_STATS_DATA table -->
+	<action name="sqoop-eval">
+		<sqoop xmlns="uri:oozie:sqoop-action:0.2">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<arg>eval</arg>
+			<arg>--connect</arg>
+			<arg>jdbc:mysql://localhost/GENDER_STATS_DB</arg>
+			<arg>--username</arg>
+			<arg>EZ_ADMIN</arg>
+			<arg>--password-file</arg>
+			<arg>${password}</arg>
+			<arg>--query</arg>
+			<arg>TRUNCATE TABLE GENDER_STATS_DATA</arg>
+		</sqoop>
+		<ok to="sqoop-export-all"/>
+		<error to="kill"/>
+	</action>
+
+	<!-- Sqoop export HDFS data to MySQL table -->
+	<action name="sqoop-export-all">
+		<sqoop xmlns="uri:oozie:sqoop-action:0.2">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<job-xml>sqoop-site.xml</job-xml>
+			<configuration>
+				<property>
+					<name>mapred.compress.map.output</name>
+					<value>true</value>
+				</property>
+			</configuration>
+			<arg>job</arg>
+			<arg>--meta-connect</arg>
+			<arg>jdbc:hsqldb:hsql://sandbox-hdp.hortonworks.com:16001/sqoop</arg>
+			<arg>--exec</arg>
+			<arg>sqoop-export-all</arg>
+		</sqoop>
+		<ok to="sqoop-import-bq1"/>
+		<error to="kill"/>
+	</action>
+
+	<action name="sqoop-import-bq1">
+		<sqoop xmlns="uri:oozie:sqoop-action:0.2">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<prepare>
+				<delete path="${name_node}/user/root/EZData/BQ1/"/>
+			</prepare>
+			<job-xml>sqoop-site.xml</job-xml>
+			<configuration>
+				<property>
+					<name>mapred.compress.map.output</name>
+					<value>true</value>
+				</property>
+			</configuration>
+			<arg>job</arg>
+			<arg>--meta-connect</arg>
+			<arg>jdbc:hsqldb:hsql://sandbox-hdp.hortonworks.com:16001/sqoop</arg>
+			<arg>--exec</arg>
+			<arg>sqoop-import-bq1</arg>
+		</sqoop>
+		<ok to="sqoop-import-bq2"/>
+		<error to="kill"/>
+	</action>
+
+	<action name="sqoop-import-bq2">
+		<sqoop xmlns="uri:oozie:sqoop-action:0.2">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<prepare>
+				<delete path="${name_node}/user/root/EZData/BQ2/"/>
+			</prepare>
+			<job-xml>sqoop-site.xml</job-xml>
+			<configuration>
+				<property>
+					<name>mapred.compress.map.output</name>
+					<value>true</value>
+				</property>
+			</configuration>
+			<arg>job</arg>
+			<arg>--meta-connect</arg>
+			<arg>jdbc:hsqldb:hsql://sandbox-hdp.hortonworks.com:16001/sqoop</arg>
+			<arg>--exec</arg>
+			<arg>sqoop-import-bq2</arg>
+		</sqoop>
+		<ok to="sqoop-import-bq3"/>
+		<error to="kill"/>
+	</action>
+
+	<action name="sqoop-import-bq3">
+		<sqoop xmlns="uri:oozie:sqoop-action:0.2">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<prepare>
+				<delete path="${name_node}/user/root/EZData/BQ3/"/>
+			</prepare>
+			<job-xml>sqoop-site.xml</job-xml>
+			<configuration>
+				<property>
+					<name>mapred.compress.map.output</name>
+					<value>true</value>
+				</property>
+			</configuration>
+			<arg>job</arg>
+			<arg>--meta-connect</arg>
+			<arg>jdbc:hsqldb:hsql://sandbox-hdp.hortonworks.com:16001/sqoop</arg>
+			<arg>--exec</arg>
+			<arg>sqoop-import-bq3</arg>
+		</sqoop>
+		<ok to="sqoop-import-bq4"/>
+		<error to="kill"/>
+	</action>
+
+	<action name="sqoop-import-bq4">
+		<sqoop xmlns="uri:oozie:sqoop-action:0.2">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<prepare>
+				<delete path="${name_node}/user/root/EZData/BQ4/"/>
+			</prepare>
+			<job-xml>sqoop-site.xml</job-xml>
+			<configuration>
+				<property>
+					<name>mapred.compress.map.output</name>
+					<value>true</value>
+				</property>
+			</configuration>
+			<arg>job</arg>
+			<arg>--meta-connect</arg>
+			<arg>jdbc:hsqldb:hsql://sandbox-hdp.hortonworks.com:16001/sqoop</arg>
+			<arg>--exec</arg>
+			<arg>sqoop-import-bq4</arg>
+		</sqoop>
+		<ok to="sqoop-import-bq5"/>
+		<error to="kill"/>
+	</action>
+
+	<action name="sqoop-import-bq5">
+		<sqoop xmlns="uri:oozie:sqoop-action:0.2">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<prepare>
+				<delete path="${name_node}/user/root/EZData/BQ5/"/>
+			</prepare>
+			<job-xml>sqoop-site.xml</job-xml>
+			<configuration>
+				<property>
+					<name>mapred.compress.map.output</name>
+					<value>true</value>
+				</property>
+			</configuration>
+			<arg>job</arg>
+			<arg>--meta-connect</arg>
+			<arg>jdbc:hsqldb:hsql://sandbox-hdp.hortonworks.com:16001/sqoop</arg>
+			<arg>--exec</arg>
+			<arg>sqoop-import-bq5</arg>
+		</sqoop>
+		<ok to="hive-create-external-tables"/>
+		<error to="kill"/>
+	</action>
+
+	<!-- Create hive external tables -->
+	<action name="hive-create-external-tables">
+		<hive xmlns="uri:oozie:hive-action:0.4">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<configuration>
+				<property>
+					<name>hive.metastore.uris</name>
+					<value>thrift://sandbox-hdp.hortonworks.com:9083</value>
+				</property>
+			</configuration>
+			<script>${scripts_location}/create-external-tables.sql</script>
+		</hive>
+
+		<ok to="hive-bq2-solution" />
+		<error to="kill" />
+	</action>
+
+	<!-- Calculate solution to BQ2 and store it in Hive -->
+	<action name="hive-bq2-solution">
+		<hive xmlns="uri:oozie:hive-action:0.4">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<configuration>
+				<property>
+					<name>hive.metastore.uris</name>
+					<value>thrift://sandbox-hdp.hortonworks.com:9083</value>
+				</property>
+			</configuration>
+			<script>${scripts_location}/bq2-solution.sql</script>
+		</hive>
+
+		<ok to="end" />
+		<error to="kill" />
+	</action>
+
+	<!-- Kill job control node -->
+	<kill name="kill">
+		<message>Oozie job terminated with errors.</message>
+	</kill>
+
+	<!-- End job control node -->
+	<end name="end" />
+</workflow-app>
