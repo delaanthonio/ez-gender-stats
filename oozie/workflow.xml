@@ -176,7 +176,23 @@
 			</configuration>
 			<script>${scripts_location}/create-external-tables.sql</script>
 		</hive>
+		<ok to="hive-bq1-solution" />
+		<error to="kill" />
+	</action>
 
+	<!-- Calculate solution to BQ1 and store it in Hive -->
+	<action name="hive-bq1-solution">
+		<hive xmlns="uri:oozie:hive-action:0.4">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<configuration>
+				<property>
+					<name>hive.metastore.uris</name>
+					<value>thrift://sandbox-hdp.hortonworks.com:9083</value>
+				</property>
+			</configuration>
+			<script>${scripts_location}/bq1-solution.sql</script>
+		</hive>
 		<ok to="hive-bq2-solution" />
 		<error to="kill" />
 	</action>
@@ -194,7 +210,157 @@
 			</configuration>
 			<script>${scripts_location}/bq2-solution.sql</script>
 		</hive>
+		<ok to="hive-bq3-solution" />
+		<error to="kill" />
+	</action>
 
+	<!-- Calculate solution to BQ3 and store it in Hive -->
+	<action name="hive-bq3-solution">
+		<hive xmlns="uri:oozie:hive-action:0.4">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<configuration>
+				<property>
+					<name>hive.metastore.uris</name>
+					<value>thrift://sandbox-hdp.hortonworks.com:9083</value>
+				</property>
+			</configuration>
+			<script>${scripts_location}/bq3-solution.sql</script>
+		</hive>
+		<ok to="hive-bq4-solution" />
+		<error to="kill" />
+	</action>
+
+	<!-- Calculate solution to BQ4 and store it in Hive -->
+	<action name="hive-bq4-solution">
+		<hive xmlns="uri:oozie:hive-action:0.4">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<configuration>
+				<property>
+					<name>hive.metastore.uris</name>
+					<value>thrift://sandbox-hdp.hortonworks.com:9083</value>
+				</property>
+			</configuration>
+			<script>${scripts_location}/bq4-solution.sql</script>
+		</hive>
+		<ok to="hive-bq5-solution" />
+		<error to="kill" />
+	</action>
+
+	<!-- Calculate solution to BQ5 and store it in Hive -->
+	<action name="hive-bq5-solution">
+		<hive xmlns="uri:oozie:hive-action:0.4">
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<configuration>
+				<property>
+					<name>hive.metastore.uris</name>
+					<value>thrift://sandbox-hdp.hortonworks.com:9083</value>
+				</property>
+			</configuration>
+			<script>${scripts_location}/bq5-solution.sql</script>
+		</hive>
+		<ok to="pig-bq1-solution" />
+		<error to="kill" />
+	</action>
+
+	<!-- Calculate solution to BQ1 and store it in HDFS -->
+	<action name="pig-bq1-solution">
+		<pig>
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<prepare>
+				<delete path="${name_node}/user/root/Project2/Pig/BQ1"/>
+			</prepare>
+			<configuration>
+				<property>
+                    <name>mapred.compress.map.output</name>
+                    <value>true</value>
+                </property>
+			</configuration>
+			<script>${scripts_location}/bq1-solution.pig</script>
+		</pig>
+		<ok to="pig-bq2-solution" />
+		<error to="kill" />
+	</action>
+
+	<!-- Calculate solution to BQ2 and store it in HDFS -->
+	<action name="pig-bq2-solution">
+		<pig>
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<prepare>
+				<delete path="${name_node}/user/root/Project2/Pig/BQ2"/>
+			</prepare>
+			<configuration>
+				<property>
+                    <name>mapred.compress.map.output</name>
+                    <value>true</value>
+                </property>
+			</configuration>
+			<script>${scripts_location}/bq2-solution.pig</script>
+		</pig>
+		<ok to="pig-bq3-solution" />
+		<error to="kill" />
+	</action>
+
+	<!-- Calculate solution to BQ3 and store it in HDFS -->
+	<action name="pig-bq3-solution">
+		<pig>
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<prepare>
+				<delete path="${name_node}/user/root/Project2/Pig/BQ3"/>
+			</prepare>
+			<configuration>
+				<property>
+                    <name>mapred.compress.map.output</name>
+                    <value>true</value>
+                </property>
+			</configuration>
+			<script>${scripts_location}/bq3-solution.pig</script>
+		</pig>
+		<ok to="pig-bq4-solution" />
+		<error to="kill" />
+	</action>
+
+	<!-- Calculate solution to BQ4 and store it in HDFS -->
+	<action name="pig-bq4-solution">
+		<pig>
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<prepare>
+				<delete path="${name_node}/user/root/Project2/Pig/BQ4"/>
+			</prepare>
+			<configuration>
+				<property>
+                    <name>mapred.compress.map.output</name>
+                    <value>true</value>
+                </property>
+			</configuration>
+			<script>${scripts_location}/bq4-solution.pig</script>
+		</pig>
+		<ok to="pig-bq5-solution" />
+		<error to="kill" />
+	</action>
+
+	<!-- Calculate solution to BQ5 and store it in HDFS -->
+	<action name="pig-bq5-solution">
+		<pig>
+			<job-tracker>${job_tracker}</job-tracker>
+			<name-node>${name_node}</name-node>
+			<prepare>
+				<delete path="${name_node}/user/root/Project2/Pig/BQ5"/>
+			</prepare>
+			<configuration>
+				<property>
+                    <name>mapred.compress.map.output</name>
+                    <value>true</value>
+                </property>
+			</configuration>
+			<script>${scripts_location}/bq5-solution.pig</script>
+		</pig>
 		<ok to="end" />
 		<error to="kill" />
 	</action>
