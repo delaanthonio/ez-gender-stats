@@ -86,4 +86,6 @@ employment_diff = foreach joined_data generate
     , ROUND(male_data::y2015 - female_data::y2015)
     ;
 
-dump employment_diff;
+STORE employment_diff
+    INTO 'hbase://bq5'
+    USING org.apache.pig.backend.hadoop.hbase.HBaseStorage('data:low_grad_rate');
