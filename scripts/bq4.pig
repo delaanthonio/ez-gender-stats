@@ -14,7 +14,8 @@ yr2005:double, yr2006:double, yr2007:double, yr2008:double, yr2009:double,
 yr2010:double, yr2011:double, yr2012:double, yr2013:double, yr2014:double, 
 yr2015:double, yr2016:double);
 
-bq4 = foreach bq4data generate 
+bq4 = foreach bq4data generate
+country_name, 
 (yr2001 - yr2000), 
 (yr2002 - yr2001), 
 (yr2003 - yr2002), 
@@ -31,3 +32,24 @@ bq4 = foreach bq4data generate
 (yr2014 - yr2013), 
 (yr2015 - yr2014), 
 (yr2016 - yr2015);
+
+bq4WithKey = rank bq4;
+
+STORE bq4WithKey INTO 'hbase://bq4' USING org.apache.pig.backend.hadoop.hbase.HBaseStorage(
+'data:country, 
+data:y2000_2001, 
+data:y2001_2002, 
+data:y2002_2003, 
+data:y2003_2004, 
+data:y2004_2005, 
+data:y2005_2006, 
+data:y2006_2007, 
+data:y2007_2008, 
+data:y2008_2009, 
+data:y2009_2010, 
+data:y2010_2011, 
+data:y2011_2012, 
+data:y2012_2013, 
+data:y2013_2014, 
+data:y2014_2015, 
+data:y2015_2016');
